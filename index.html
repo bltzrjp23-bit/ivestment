@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Investor Dashboard — Demo</title>
+<style>
+:root{--bg:#08131c;--panel:#202b36;--panel2:#17232d;--muted:#aab3bd;--green:#b8ff00;--text:#f4f7fa;--line:#3a4651}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+button,input{font:inherit}button{cursor:pointer;border:0}.app{max-width:520px;min-height:100vh;margin:auto;padding:18px 16px 100px}
+.top{display:flex;align-items:center;justify-content:space-between;margin:8px 0 22px}.brand{font-weight:700;font-size:19px}.tag{font-size:11px;color:#172000;background:var(--green);padding:4px 8px;border-radius:20px;font-weight:800}
+.notice{background:#332b17;color:#ffe4a3;border:1px solid #6a5727;padding:11px 13px;border-radius:12px;font-size:12px;margin-bottom:16px}
+.balance{background:var(--green);color:#111a00;border-radius:22px;padding:22px;margin-bottom:18px}.balance small{display:block;font-size:14px}.amount{font-size:34px;font-weight:800;letter-spacing:-1px}.profit{margin-top:20px;display:flex;justify-content:space-between;align-items:end}.profit strong{font-size:27px}
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:18px 0 24px}.quick button{background:var(--panel);color:var(--text);border-radius:14px;padding:14px 5px;font-size:12px}.quick span{display:block;font-size:23px;margin-bottom:7px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin:22px 0 12px}.section-head h2{font-size:19px;margin:0}.muted{color:var(--muted)}
+.checkin{background:#17271d;border:1px solid #465d24;border-radius:18px;padding:16px;margin-bottom:24px}.checkin h3{margin:0 0 12px;color:var(--green)}.check-row{display:flex;align-items:center;gap:12px}.bonus{background:var(--green);color:#182000;border-radius:13px;padding:13px;text-align:center;font-weight:700;min-width:86px}.bonus b{display:block;font-size:23px}.check-copy{flex:1;font-size:13px}.pill{background:var(--green);color:#182000;border-radius:30px;padding:10px 15px;font-weight:700}
+.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.product{background:var(--panel);border-radius:15px;overflow:hidden}.product-art{height:105px;background:linear-gradient(135deg,#43505a,#202b36);display:grid;place-items:center;color:#d8e0e8;font-size:32px}.product-body{padding:12px}.product h3{margin:0 0 9px;font-size:15px}.data{display:flex;justify-content:space-between;gap:6px;font-size:12px;margin:5px 0}.data span:first-child{color:var(--muted)}.product button{width:100%;margin-top:10px;padding:10px;background:var(--green);border-radius:9px;font-weight:800;color:#172000}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(520px,100%);display:flex;justify-content:space-around;background:#17232d;border:1px solid #33414d;border-bottom:0;border-radius:22px 22px 0 0;padding:12px 4px calc(12px + env(safe-area-inset-bottom));z-index:5}.nav button{background:none;color:var(--muted);font-size:11px;min-width:54px}.nav button b{display:block;font-size:21px;margin-bottom:3px}.nav button.active{color:var(--green)}
+.page{display:none}.page.active{display:block}.card{background:var(--panel);padding:17px;border-radius:15px;margin:12px 0}.rowline{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}.rowline:last-child{border:0}
+.primary{background:var(--green);color:#172000;border-radius:10px;padding:12px 16px;font-weight:800}.secondary{background:#35414b;color:white;border-radius:10px;padding:11px 15px}
+.field{width:100%;background:var(--panel);border:1px solid var(--line);color:white;padding:13px;border-radius:10px;margin:7px 0 14px}.empty{text-align:center;color:var(--muted);padding:30px 10px}
+.modal-backdrop{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;padding:20px;z-index:10}.modal{width:min(420px,100%);background:var(--panel2);padding:20px;border-radius:18px}.modal h3{margin-top:0}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:12px}
+@media(min-width:600px){body{padding:18px 0}.app{border:1px solid #26333e;border-radius:22px;min-height:calc(100vh - 36px)}.nav{bottom:18px;border-radius:18px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top"><div class="brand">◈ Investors <span class="tag">DEMO</span></div><div class="muted" id="userLabel">Guest</div><button class="secondary" onclick="navigate('login')">Login</button></div>
+  <div class="notice">DEMO ONLY — all amounts and activity are fictional. No real investments or payments are processed.</div>
+
+  <section id="login" class="page">
+    <div style="text-align:center;padding:34px 10px 18px"><div style="font-size:38px">◈</div><h1>Welcome back</h1><p class="muted">Demo sign-in screen</p></div>
+    <div class="card"><label for="demoPhone">Phone number (sample only)</label><input class="field" id="demoPhone" placeholder="Enter a test phone number" autocomplete="off"><label for="demoPassword">Password (do not use a real password)</label><input class="field" id="demoPassword" type="password" placeholder="Enter any demo text" autocomplete="off"><button class="primary" style="width:100%" onclick="demoLogin()">Enter demo</button><p class="muted" style="font-size:12px;margin-bottom:0">This screen does not create accounts or verify identities. Do not enter real personal information.</p></div>
+    <p class="muted" style="text-align:center">New here? <a href="#" onclick="event.preventDefault();showModal('Registration is a visual placeholder only. A real account system requires secure server-side authentication.')" style="color:var(--green)">Register demo account</a></p>
+  </section>
+
+  <section id="home" class="page active">
+    <div class="balance"><small>Simulated balance</small><div class="amount" id="balance">$3,830.00</div><div class="profit"><div><small>Simulated profit</small><strong id="profit">$5.00</strong></div><button class="secondary" onclick="showModal('This demo does not accept deposits. Connect a compliant payment provider only after legal and security review.')">＋ Add funds</button></div></div>
+    <div class="quick">
+      <button onclick="showModal('Deposits are disabled in this demo.')"><span>↗</span>DEPOSIT</button>
+      <button onclick="showModal('Withdrawals are disabled in this demo.')"><span>↙</span>WITHDRAW</button>
+      <button onclick="navigate('team')"><span>♧</span>COMMUNITY</button>
+      <button onclick="navigate('account')"><span>◇</span>ACCOUNT</button>
+    </div>
+    <div class="checkin"><h3>Daily Check-in</h3><div class="check-row"><div class="bonus"><b>$0</b>Demo</div><div class="check-copy"><strong>Demo check-in</strong><br><span class="muted">No cash reward is issued.</span></div><button class="pill" onclick="showModal('This is a visual demo. No reward or money is issued.')">VIEW</button></div></div>
+    <div class="section-head"><h2>Sample products</h2><span class="muted">Demo catalog</span></div>
+    <div class="products" id="homeProducts"></div>
+  </section>
+
+  <section id="invest" class="page">
+    <div class="section-head"><h2>Products</h2><span class="muted">Illustrative only</span></div>
+    <div class="products" id="allProducts"></div>
+  </section>
+
+  <section id="orders" class="page">
+    <div class="section-head"><h2>My Orders</h2><span class="tag">DEMO</span></div>
+    <div class="card"><div class="muted">Demo order count</div><div class="amount" style="font-size:28px" id="orderCount">0</div><p class="muted">Orders are stored only in this browser session.</p></div>
+    <div id="orderList" class="card"><div class="empty">No demo orders yet.</div></div>
+  </section>
+
+  <section id="transactions" class="page">
+    <div class="section-head"><h2>Transaction History</h2></div>
+    <div class="card"><div class="empty">No real transactions. Payment features are disabled.</div></div>
+  </section>
+
+  <section id="team" class="page">
+    <div class="section-head"><h2>Community</h2></div>
+    <div class="card"><h3>Team members</h3><div class="amount" style="font-size:28px">0</div><p class="muted">Referral and commission features are not enabled.</p></div>
+  </section>
+
+  <section id="account" class="page">
+    <div class="section-head"><h2>Account</h2></div>
+    <div class="card"><div class="rowline"><span class="muted">Profile</span><strong id="profileName">Guest Demo</strong></div><div class="rowline"><span class="muted">Account type</span><strong>Demo</strong></div><div class="rowline"><span class="muted">Bank account</span><strong>Not connected</strong></div><div class="rowline"><span class="muted">Security</span><strong>Local demo only</strong></div></div>
+    <button class="primary" onclick="showModal('For a real service, implement secure authentication, privacy controls, and independent security testing.')">Security information</button>
+  </section>
+</div>
+
+<nav class="nav">
+  <button data-page="invest" onclick="navigate('invest')"><b>▤</b>Invest</button>
+  <button data-page="team" onclick="navigate('team')"><b>♧</b>Team</button>
+  <button data-page="home" class="active" onclick="navigate('home')"><b>⌂</b>Home</button>
+  <button data-page="orders" onclick="navigate('orders')"><b>▣</b>Orders</button>
+  <button data-page="account" onclick="navigate('account')"><b>☻</b>Account</button>
+</nav>
+
+<div class="modal-backdrop" id="modalBackdrop" onclick="if(event.target===this)closeModal()"><div class="modal"><h3>Demo notice</h3><p id="modalText" class="muted"></p><div class="modal-actions"><button class="primary" onclick="closeModal()">OK</button></div></div></div>
+<script>
+const products=[
+ {name:"Starter Sample",price:1000,duration:"30 days",note:"Illustrative product"},
+ {name:"Standard Sample",price:1500,duration:"60 days",note:"Illustrative product"},
+ {name:"Plus Sample",price:2200,duration:"150 days",note:"Illustrative product"},
+ {name:"Premium Sample",price:2600,duration:"180 days",note:"Illustrative product"}
+];
+let orders=[];
+function money(n){return "$"+Number(n).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function productCard(p,i){return `<article class="product"><div class="product-art">▧</div><div class="product-body"><h3>${p.name}</h3><div class="data"><span>Sample price</span><strong>${money(p.price)}</strong></div><div class="data"><span>Term</span><strong>${p.duration}</strong></div><div class="data"><span>Return</span><strong>Not specified</strong></div><div class="data"><span>Type</span><strong>Demo only</strong></div><button onclick="addOrder(${i})">View sample</button></div></article>`}
+function renderProducts(){document.getElementById("homeProducts").innerHTML=products.slice(0,2).map(productCard).join("");document.getElementById("allProducts").innerHTML=products.map(productCard).join("")}
+function demoLogin(){document.getElementById("demoPassword").value="";document.getElementById("userLabel").textContent="Demo user";navigate("home")}\nfunction navigate(page){document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));document.getElementById(page).classList.add("active");document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===page));window.scrollTo({top:0,behavior:"smooth"})}
+function addOrder(i){orders.push({...products[i],created:new Date().toLocaleString()});renderOrders();showModal("Sample product added to your local demo orders. No payment was made and no investment was created.");}
+function renderOrders(){document.getElementById("orderCount").textContent=orders.length;document.getElementById("orderList").innerHTML=orders.length?orders.map(o=>`<div class="rowline"><div><strong>${o.name}</strong><div class="muted" style="font-size:12px">${o.duration} · ${o.created}</div></div><strong>${money(o.price)}</strong></div>`).join(""):'<div class="empty">No demo orders yet.</div>'}
+function showModal(message){document.getElementById("modalText").textContent=message;document.getElementById("modalBackdrop").style.display="flex"}
+function closeModal(){document.getElementById("modalBackdrop").style.display="none"}
+renderProducts();renderOrders();
+</script>
+</body>
+</html>
